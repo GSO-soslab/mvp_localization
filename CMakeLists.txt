@@ -7,6 +7,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(geographic_msgs REQUIRED)
 # find_package(GTSAM REQUIRED)
 find_package(GTSAM)
 if(GTSAM_FOUND)
@@ -27,6 +28,7 @@ set(dependencies
   std_msgs
   nav_msgs
   sensor_msgs
+  geographic_msgs
   geometry_msgs
 )
 
@@ -98,9 +100,9 @@ install(DIRECTORY include/
   DESTINATION include/
 )
 
-# install(DIRECTORY launch 
-#   DESTINATION share/${PROJECT_NAME}
-# )
+install(DIRECTORY launch 
+  DESTINATION share/${PROJECT_NAME}
+)
 
 # install(DIRECTORY config 
 #   DESTINATION share/${PROJECT_NAME}
