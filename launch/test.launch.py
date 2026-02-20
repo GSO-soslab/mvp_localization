@@ -19,11 +19,11 @@ def generate_launch_description():
         package='mvp_localization',
         executable='mvp_localization_node',
         name='mvp_localization',
-        namespace="wamv_rise",
+        namespace="alpha_rise",
         output='screen',
         prefix=['stdbuf -o L'],
-        remappings=[('imu/data', 'xsens_ahrs/imu/data'),
-                        ('gps/fix', 'unicore_rtk/fix')],       
+        remappings=[('imu/data', 'ekf/imu/data'),
+                        ('gps/fix', 'unicore_rtk_driver/fix')],       
     )
 
     foxglove = Node(

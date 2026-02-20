@@ -16,6 +16,8 @@
 #include <gtsam/inference/Symbol.h>
 #include <gtsam/slam/BetweenFactor.h>
 
+#include <mutex> // Add this include
+
 using namespace gtsam;
 using symbol_shorthand::X; // Pose3 (x,y,z,r,p,y)
 using symbol_shorthand::V; // Velocity (xdot,ydot,zdot)
@@ -42,7 +44,7 @@ public:
         gps_sub_ = this->create_subscription<sensor_msgs::msg::NavSatFix>(
             "gps/fix", 10, std::bind(&GtsamImuNode::gpsCallback, this, std::placeholders::_1));
         
-        odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>("odometry/filtered", 10);
+        odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>("gtsam/odometry/filtered", 10);
         
         // 3. ISAM2 Setup
         ISAM2Params parameters;
@@ -50,17 +52,37 @@ public:
         parameters.relinearizeSkip = 1;
         isam2_ = std::make_unique<ISAM2>(parameters);
 
+        // Create a timer running at 50Hz (20ms)
+        timer_ = this->create_wall_timer(
+                        std::chrono::milliseconds(20), 
+                        std::bind(&GtsamImuNode::timerCallback, this));
+        
+
         RCLCPP_INFO(this->get_logger(), "GTSAM Node started. Waiting for first GPS/Odom to initialize...");
     }
 
 private:
+
+    void timerCallback() {
+    if (!initialized_) return;
+
+    NavState current_prediction;
+    {
+        std::lock_guard<std::mutex> lock(data_mutex_);
+        // Predict the state from the last optimized point using current IMU integrator
+        current_prediction = pim_->predict(prev_state_, prev_bias_);
+    }
+
+    publishOdometry(this->now(), current_prediction);
+    }
+
     void initializeSystem(const sensor_msgs::msg::NavSatFix::SharedPtr msg) {
 
 
         m_datum.latitude = msg->latitude;
 
         m_datum.longitude = msg->longitude;
-
+        
 
         // Rot3 prior_rotation = Rot3::Quaternion(
         //     msg->pose.pose.orientation.w, msg->pose.pose.orientation.x,
@@ -169,16 +191,15 @@ private:
         graph_.resize(0);
         initial_values_.clear();
 
-        publishOdometry(msg->header.stamp);
     }
 
-    void publishOdometry(const rclcpp::Time& stamp) {
+    void publishOdometry(const rclcpp::Time& stamp, const NavState& state) {
         nav_msgs::msg::Odometry odom;
         odom.header.stamp = stamp;
         odom.header.frame_id = "odom";
         odom.child_frame_id = "base_link";
 
-        Pose3 pose = prev_state_.pose();
+        Pose3 pose = state.pose();
         odom.pose.pose.position.x = pose.x();
         odom.pose.pose.position.y = pose.y();
         odom.pose.pose.position.z = pose.z();
@@ -189,7 +210,7 @@ private:
         odom.pose.pose.orientation.y = q.y();
         odom.pose.pose.orientation.z = q.z();
 
-        Vector3 vel = prev_state_.v();
+        Vector3 vel = state.v();
         odom.twist.twist.linear.x = vel.x();
         odom.twist.twist.linear.y = vel.y();
         odom.twist.twist.linear.z = vel.z();
@@ -244,13 +265,16 @@ private:
     std::shared_ptr<PreintegratedImuMeasurements> pim_;
     NonlinearFactorGraph graph_;
     Values initial_values_;
-    std::unique_ptr<ISAM2> isam2_;
+    std::unique_ptr<ISAM2> isam2_;// Create a timer running at 50Hz (20ms)
 
     rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_sub_;
     rclcpp::Subscription<sensor_msgs::msg::NavSatFix>::SharedPtr gps_sub_;
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
 
     geographic_msgs::msg::GeoPoint m_datum;
+
+    rclcpp::TimerBase::SharedPtr timer_;
+    std::mutex data_mutex_;
 };
 
 int main(int argc, char** argv) {

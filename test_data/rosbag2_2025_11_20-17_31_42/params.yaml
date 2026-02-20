@@ -1,0 +1,1890 @@
+bhv_params.yaml:
+  bhv_altitude_tracking:
+    altitude_measurement_topics:
+    - nucleus_node/altimeter_common
+    - nucleus_node/altimeter_beam1_common
+    - nucleus_node/altimeter_beam2_common
+    - nucleus_node/altimeter_beam3_common
+    altitude_tracking_mode: 0
+    desired_altitude: 2.0
+    desired_altitude_topic: desired_altitude
+    max_pitch: 0.0
+    no_altitude_timeout: 5.0
+    pitch_assist_band: 0.5
+    pitch_gain: 0.0
+    preset_water_depth: 9.0
+  bhv_path_following:
+    acceptance_radius: 3.0
+    beta_gain: 0.0
+    default_bhv_child_link: cg_link
+    default_bhv_world_link: world_ned
+    lookahead_adaptive_flag: false
+    lookahead_distance: 3.0
+    lookahead_gamma: 1.0
+    lookahead_max: 15.0
+    lookahead_min: 3.0
+    max_pitch: 0.35
+    overshoot_timeout: 30.0
+    pitch_assist_band: 0.5
+    pitch_gain: 0.0
+    sigma: 0.0
+    state_done: start
+    state_fail: kill
+    turning_angle_sector: 1.04
+    turning_surge_velocity: 0.2
+    waypoint_file_package: alpha_rise_bringup
+    waypoint_path: config/go_to_list/
+    waypoint_u:
+    - 0.5
+    - 0.8
+    - 0.8
+    waypoint_x:
+    - 30.0
+    - 0.0
+    - 15.0
+    waypoint_y:
+    - 0.0
+    - 20.0
+    - 30.0
+    waypoint_z:
+    - 4.0
+    - 5.0
+    - 3.0
+  bhv_surfacing:
+    default_bhv_child_link: cg_link
+    default_bhv_world_link: world_ned
+    dvl_topic: nucleus_node/bottom_lock_velocity_common
+    imu_topic: ekf/imu/data
+    min_gps_count_at_surface: 10
+    navigation_fail_state: start
+    no_dvl_timeout: 10.0
+    no_gps_timeout: 200.0
+    no_imu_timeout: 10.0
+    surfacing_depth: 0.2
+    surfacing_duration: 20.0
+  bhv_teleop:
+    default_bhv_child_link: cg_link
+    default_bhv_world_link: world_ned
+    no_joy_timeout: 10.0
+    tele_d_depth: 0.2
+    tele_d_pitch: 10.0
+    tele_d_yaw: 10.0
+    tele_s_surge: 1.0
+    tele_s_sway: 1.0
+bhv_params_sim.yaml:
+  bhv_path_following:
+    acceptance_radius: 3.0
+    beta_gain: 0.0
+    default_bhv_child_link: cg_link
+    default_bhv_world_link: world_ned
+    lookahead_adaptive_flag: false
+    lookahead_distance: 3.0
+    lookahead_gamma: 1.0
+    lookahead_max: 15.0
+    lookahead_min: 3.0
+    max_pitch: 0.35
+    overshoot_timeout: 30.0
+    pitch_assist_band: 0.5
+    pitch_gain: 0.0
+    sigma: 0.0
+    state_done: start
+    state_fail: kill
+    turning_angle_sector: 1.04
+    turning_surge_velocity: 0.2
+    waypoint_file_package: alpha_rise_bringup
+    waypoint_path: config/go_to_list/
+    waypoint_u:
+    - 0.5
+    - 0.8
+    - 0.8
+    waypoint_x:
+    - 30.0
+    - 0.0
+    - 15.0
+    waypoint_y:
+    - 0.0
+    - 20.0
+    - 30.0
+    waypoint_z:
+    - 4.0
+    - 5.0
+    - 3.0
+  bhv_teleop:
+    default_bhv_child_link: cg_link
+    default_bhv_world_link: world_ned
+    no_joy_timeout: 10.0
+    tele_d_depth: 0.2
+    tele_d_pitch: 10.0
+    tele_d_yaw: 10.0
+    tele_s_surge: 1.0
+    tele_s_sway: 1.0
+blueprint_oculus_sonar.yaml:
+  /alpha_rise/oculus_sonar:
+    ros__parameters:
+      fluid_density: 1023.6
+      frame_id: alpha_rise/fls
+      frequency_mode: 2
+      gain_assist: true
+      gain_percent: 50.0
+      gamma_correction: 153
+      nbeams: 1
+      odom_msg_parent_frame_id: alpha_rise/world
+      ping_rate: 2
+      range: 40.0
+      salinity: 0.0
+      sound_speed: 0.0
+      use_salinity: true
+      z_covariance: 0.2
+bluerobotics_bar30.yaml:
+  /alpha_rise/bluerobotics_pressure_node:
+    ros__parameters:
+      ros:
+        frame_id: alpha_rise/pressure
+      sensor:
+        bus: 1
+        child_frame: alpha_rise/pressure
+        fluid_density: 1022.0
+        model: 1
+        parent_frame: alpha_rise/world
+        z_covariance: 0.0
+      system:
+        rate: 1
+bluerobotics_ping360.yaml:
+  /alpha_rise/ping360_node:
+    ros__parameters:
+      Configuration:
+        angle_max: 210
+        angle_min: 0
+        angle_sector: 360
+        angle_step: 1
+        constrain_min: true
+        constrained_min_angle: 45
+        custom_enabled: true
+        frame: alpha_rise/ping360_link
+        frequency: 750
+        gain: 1
+        image_rate: 100
+        image_size: 300
+        range_max: 50
+        scan_threshold: 200
+        sonar_timeout: 2000
+        speed_of_sound: 1500
+      Interface:
+        baudrate: 115200
+        connection_type: udp
+        device: /dev/ttyUSB0
+        fallback_emulated: true
+        udp_address: 192.168.2.105
+        udp_port: 12345
+      Topics:
+        publish_echo: true
+        publish_image: true
+        publish_pcl: true
+        publish_scan: false
+common_costmap_params.yaml:
+  always_send_full_costmap: true
+  global_frame: alpha_rise/odom
+  height: 100.0
+  obstacles:
+    inflation:
+      cost_scaling_factor: 0.1
+      enabled: true
+      inflation_radius: 0.1
+    observation_sources: pointcloud
+    pointcloud:
+      clearing: true
+      data_type: PointCloud2
+      marking: true
+      max_obstacle_height: 5
+      min_obstacle_height: -20
+      observation_persistance: 0
+      obstacle_range: 50
+      raytrace_range: 50
+      sensor_frame: alpha_rise/ping360_link
+      topic: /alpha_rise/msis/pointcloud/filtered
+  plugins:
+  - name: obstacles
+    type: costmap_2d::ObstacleLayer
+  resolution: 1
+  robot_base_frame: alpha_rise/base_link
+  rolling_window: true
+  static_map: false
+  transform_tolerance: 2.0
+  update_frequency: 5.0
+  width: 100.0
+common_costmap_params_sim.yaml:
+  always_send_full_costmap: true
+  global_frame: alpha_rise/odom
+  height: 100.0
+  obstacles:
+    inflation:
+      cost_scaling_factor: 0.1
+      enabled: true
+      inflation_radius: 0.1
+    observation_sources: pointcloud_sf
+    pointcloud_sf:
+      clearing: true
+      data_type: PointCloud2
+      marking: true
+      max_obstacle_height: 5
+      min_obstacle_height: -20
+      observation_persistance: 0
+      obstacle_range: 50
+      raytrace_range: 50
+      sensor_frame: alpha_rise/ping360_link_sf
+      topic: /alpha_rise/msis/stonefish/data/pointcloud/filtered
+  plugins:
+  - name: obstacles
+    type: costmap_2d::ObstacleLayer
+  resolution: 1
+  robot_base_frame: alpha_rise/base_link
+  rolling_window: true
+  static_map: false
+  transform_tolerance: 2.0
+  update_frequency: 5.0
+  width: 100.0
+config.yaml:
+  control_modes:
+    4dof:
+      pitch:
+        d: 0.0
+        i: 0.1
+        p: 15.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      u:
+        d: 0.0
+        i: 1.0
+        p: 50.0
+        pid_max: 50
+        pid_min: -20
+        v: 2.0
+      yaw:
+        d: 0.0
+        i: 1.0
+        p: 10.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      z:
+        d: 0.0
+        i: 1.25
+        p: 30.0
+        pid_max: 30
+        pid_min: -20
+        v: 5.0
+    flight:
+      pitch:
+        d: 0.0
+        i: 0.5
+        p: 10.0
+        pid_max: 30
+        pid_min: -30
+        v: 2.0
+      u:
+        d: 0.0
+        i: 5.0
+        p: 5.0
+        pid_max: 60
+        pid_min: -20
+        v: 2.0
+      yaw:
+        d: 0.0
+        i: 1.0
+        p: 10.0
+        pid_max: 20
+        pid_min: -20
+        v: 5.0
+      z:
+        d: 0.0
+        i: 0.2
+        p: 5.0
+        pid_max: 30
+        pid_min: -30
+        v: 5.0
+    idle: false
+    teleop:
+      pitch:
+        d: 0.0
+        i: 0.3
+        p: 12.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      u:
+        d: 0.0
+        i: 1.0
+        p: 50.0
+        pid_max: 50
+        pid_min: -20
+        v: 2.0
+      yaw:
+        d: 0.0
+        i: 1.0
+        p: 10.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      z:
+        d: 0.0
+        i: 1.25
+        p: 30.0
+        pid_max: 30
+        pid_min: -20
+        v: 5.0
+  thruster_ids:
+    heave_bow:
+      command_topic: control/thruster/heave_bow
+      control_tf: heave_bow_thruster_link
+      delta_limit: 2.0
+      force_topic: control/force/heave_bow
+      limits:
+      - -20.0
+      - 20.0
+      polynomials:
+      - 0.0305
+      - 18.9527
+      - 6.1205
+      - 64.0375
+      - 2.4386
+      - -24.8871
+    heave_stern:
+      command_topic: control/thruster/heave_stern
+      control_tf: heave_stern_thruster_link
+      delta_limit: 2.0
+      force_topic: control/force/heave_stern
+      limits:
+      - -20.0
+      - 20.0
+      polynomials:
+      - 0.0305
+      - 18.9527
+      - 6.1205
+      - 64.0375
+      - 2.4386
+      - -24.8871
+    surge:
+      command_topic: control/thruster/surge
+      control_tf: surge_thruster_link
+      delta_limit: 1.0
+      force_topic: control/force/surge
+      limits:
+      - -10.0
+      - 60.0
+      polynomials:
+      - 0.3281
+      - 44.1281
+      - 22.8029
+      - 84.2361
+      - -6.571
+      - -41.5185
+      xyz_flag:
+      - 0.0
+      - 0.0
+      - 0.0
+    sway_bow:
+      command_topic: control/thruster/sway_bow
+      control_tf: sway_bow_thruster_link
+      delta_limit: 1.0
+      force_topic: control/force/sway_bow
+      limits:
+      - -25.0
+      - 25.0
+      polynomials:
+      - 0.0305
+      - 18.9527
+      - 6.1205
+      - 64.0375
+      - 2.4386
+      - -24.8871
+config_sim.yaml:
+  control_modes:
+    4dof:
+      pitch:
+        d: 0.0
+        i: 0.1
+        p: 15.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      u:
+        d: 0.0
+        i: 1.0
+        p: 50.0
+        pid_max: 50
+        pid_min: -20
+        v: 2.0
+      yaw:
+        d: 0.0
+        i: 1.0
+        p: 10.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      z:
+        d: 0.0
+        i: 1.25
+        p: 30.0
+        pid_max: 30
+        pid_min: -20
+        v: 5.0
+    flight:
+      pitch:
+        d: 0.0
+        i: 0.5
+        p: 10.0
+        pid_max: 30
+        pid_min: -30
+        v: 2.0
+      u:
+        d: 0.0
+        i: 5.0
+        p: 5.0
+        pid_max: 60
+        pid_min: -20
+        v: 2.0
+      yaw:
+        d: 0.0
+        i: 1.0
+        p: 10.0
+        pid_max: 20
+        pid_min: -20
+        v: 5.0
+      z:
+        d: 0.0
+        i: 0.2
+        p: 7.0
+        pid_max: 30
+        pid_min: -30
+        v: 5.0
+    idle: false
+    teleop:
+      pitch:
+        d: 0.0
+        i: 0.3
+        p: 12.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      u:
+        d: 0.0
+        i: 1.0
+        p: 50.0
+        pid_max: 50
+        pid_min: -20
+        v: 2.0
+      yaw:
+        d: 0.0
+        i: 1.0
+        p: 10.0
+        pid_max: 20
+        pid_min: -20
+        v: 10.0
+      z:
+        d: 0.0
+        i: 1.25
+        p: 30.0
+        pid_max: 30
+        pid_min: -20
+        v: 5.0
+  thruster_ids:
+    heave_bow:
+      command_topic: control/thruster/heave_bow
+      control_tf: heave_bow_thruster_link
+      delta_limit: 1.0
+      force_topic: control/force/heave_bow
+      limits:
+      - -20.0
+      - 20.0
+      polynomials:
+      - 0.0305
+      - 18.9527
+      - 6.1205
+      - 64.0375
+      - 2.4386
+      - -24.8871
+    heave_stern:
+      command_topic: control/thruster/heave_stern
+      control_tf: heave_stern_thruster_link
+      delta_limit: 1.0
+      force_topic: control/force/heave_stern
+      limits:
+      - -20.0
+      - 20.0
+      polynomials:
+      - 0.0305
+      - 18.9527
+      - 6.1205
+      - 64.0375
+      - 2.4386
+      - -24.8871
+    surge:
+      command_topic: control/thruster/surge
+      control_tf: surge_thruster_link
+      delta_limit: 1.0
+      force_topic: control/force/surge
+      limits:
+      - -10.0
+      - 60.0
+      polynomials:
+      - 0.3281
+      - 44.1281
+      - 22.8029
+      - 84.2361
+      - -6.571
+      - -41.5185
+      xyz_flag:
+      - 0.0
+      - 0.0
+      - 0.0
+    sway_bow:
+      command_topic: control/thruster/sway_bow
+      control_tf: sway_bow_thruster_link
+      delta_limit: 1.0
+      force_topic: control/force/sway_bow
+      limits:
+      - -25.0
+      - 25.0
+      polynomials:
+      - 0.0305
+      - 18.9527
+      - 6.1205
+      - 64.0375
+      - 2.4386
+      - -24.8871
+costmap_params.yaml:
+  /alpha_rise/costmap:
+    ros__parameters:
+      always_send_full_costmap: true
+      global_frame: alpha_rise/odom
+      height: 100
+      obstacle_layer:
+        enabled: true
+        observation_sources: pointcloud
+        plugin: nav2_costmap_2d::ObstacleLayer
+        pointcloud:
+          clearing: true
+          data_type: PointCloud2
+          marking: true
+          max_obstacle_height: 5.0
+          min_obstacle_height: -20.0
+          observation_persistence: 0.0
+          obstacle_max_range: 50.0
+          obstacle_min_range: 0.0
+          raytrace_max_range: 50.0
+          raytrace_min_range: 0.0
+          sensor_frame: alpha_rise/ping360_link
+          topic: /alpha_rise/msis/pointcloud/filtered
+        pointcloud_sf:
+          clearing: true
+          data_type: PointCloud2
+          marking: true
+          max_obstacle_height: 5.0
+          min_obstacle_height: -20.0
+          observation_persistence: 0.0
+          obstacle_max_range: 50.0
+          obstacle_min_range: 0.0
+          raytrace_max_range: 50.0
+          raytrace_min_range: 0.0
+          sensor_frame: alpha_rise/ping360_link_sf
+          topic: /alpha_rise/stonefish/msis/data/pointcloud/filtered
+      plugins:
+      - obstacle_layer
+      publish_frequency: 10.0
+      resolution: 1.0
+      robot_base_frame: alpha_rise/base_link
+      rolling_window: true
+      static_map: false
+      transform_tolerance: 2.0
+      update_frequency: 10.0
+      width: 100
+fls_pcl.yaml:
+  /alpha_rise/fls_pcl_node:
+    ros__parameters:
+      beam_skip_count: 1
+      frame_id: alpha_rise/fls_link
+      horizontal_beamwidth: 70
+      intensity_threshold: 30
+      max_range: 40
+      range_threshold: 10
+      sub_topic: /alpha_rise/oculus/raw_image
+global_costmap_params.yaml:
+  global_costmap:
+    global_frame: alpha_rise/odom
+    robot_base_frame: alpha_rise/base_link
+    update_frequency: 5.0
+goby.yaml:
+  /alpha_rise/evologics_ros_node:
+    ros__parameters:
+      goby:
+        dynamic_buffer:
+          messages:
+          - vampire_state
+          vampire_state:
+            ack: false
+            blackout_time: 0
+            max_queue: 1
+            newest_first: true
+            ttl: 1800
+            value_base: 1
+        mac_slot_time: 10
+        max_frame_bytes: 1000
+        valid_depth: -1
+gpio_manager.yaml:
+  /alpha_rise/gpio_manager_node:
+    ros__parameters:
+      gpio_devices:
+      - payload_24v
+      - regular_payload
+      - backseat
+      wiringpi_gpio:
+      - 13
+      - 12
+      - 11
+gpsd_client.yaml:
+  /alpha_rise/gpsd_client:
+    ros__parameters:
+      check_fix_by_variance: false
+      frame_id: alpha_rise/gps
+      publish_rate: 1
+      use_gps_time: false
+helm.yaml:
+  behaviors:
+    bhv_altitude_tracking:
+      plugin: helm/AltitudeTracking
+      priority:
+        survey: 2
+    bhv_path_following:
+      plugin: helm/PathFollowing
+      priority:
+        survey: 1
+    bhv_surfacing:
+      plugin: helm/Surfacing
+      priority:
+        survey: 3
+    bhv_teleop:
+      plugin: helm/Teleoperation
+      priority:
+        teleop: 1
+  finite_state_machine:
+    kill:
+      control_mode: idle
+      transitions:
+      - start
+    start:
+      control_mode: idle
+      initial: true
+      transitions:
+      - kill
+      - teleop
+      - survey
+    survey:
+      control_mode: flight
+      exit_state: kill
+      max_duration: 2000
+      transitions:
+      - start
+      - kill
+      - teleop
+    teleop:
+      control_mode: teleop
+      exit_state: kill
+      max_duration: 30
+      transitions:
+      - start
+      - kill
+helm_sim.yaml:
+  behaviors:
+    bhv_path_following:
+      plugin: helm/PathFollowing
+      priority:
+        survey: 1
+    bhv_teleop:
+      plugin: helm/Teleoperation
+      priority:
+        teleop: 1
+  finite_state_machine:
+    kill:
+      control_mode: idle
+      transitions:
+      - start
+    start:
+      control_mode: idle
+      initial: true
+      transitions:
+      - kill
+      - teleop
+      - survey
+    survey:
+      control_mode: flight
+      exit_state: kill
+      max_duration: 2000
+      transitions:
+      - start
+      - kill
+      - teleop
+    teleop:
+      control_mode: teleop
+      exit_state: kill
+      max_duration: 30
+      transitions:
+      - start
+      - kill
+local_costmap_params.yaml:
+  local_costmap:
+    global_frame: alpha_rise/odom
+    publish_frequency: 5.0
+    robot_base_frame: alpha_rise/base_link
+    update_frequency: 5.0
+microstrain.yaml:
+  /alpha_rise/microstrain_inertial_driver:
+    ros__parameters:
+      baudrate: 115200
+      configure_after_reconnect: true
+      filter_adaptive_level: 3
+      filter_adaptive_time_limit_ms: 15000
+      filter_declination: 0.0
+      filter_declination_source: 3
+      filter_dynamics_mode: 3
+      filter_enable_external_heading_aiding: true
+      filter_enable_gnss_heading_aiding: false
+      filter_enable_gnss_pos_vel_aiding: false
+      filter_enable_magnetometer_aiding: false
+      filter_enable_wheeled_vehicle_constraint: false
+      filter_heading_source: 0
+      filter_imu_data_rate: 100
+      filter_pps_source: 0
+      frame_id: alpha_rise/imu
+      imu_data_rate: 100
+      imu_data_raw_rate: 0
+      imu_mag_data_rate: 100
+      imu_pressure_data_rate: 0
+      imu_wheel_speed_data_rate: 0
+      poll_max_tries: 60
+      poll_port: true
+      poll_rate_hz: 1.0
+      port: /dev/ttyACM0
+      publish_mount_to_frame_id_transform: false
+      reconnect_attempts: 10
+      set_baud: true
+      subscribe_ext_heading_enu: true
+      tf_mode: 0
+      use_enu_frame: true
+msis_filter.yaml:
+  /alpha_rise/pcl_filter_node:
+    ros__parameters:
+      number_of_bins: 1200
+      pub_topic: msis/pointcloud/filtered
+      radial_filter_param: 2.0
+      range_max: 50.0
+      sf_number_of_bins: 100
+      sf_pub_topic: stonefish/msis/data/pointcloud/filtered
+      sf_radial_filter_param: 2.0
+      sf_range_max: 50.0
+      sf_std_dev_multiplier: 1.0
+      sf_sub_topic: stonefish/msis/data/pointcloud
+      std_dev_multiplier: 5.0
+      stonefish: false
+      sub_topic: msis/pointcloud
+msis_filter_sim.yaml:
+  pcl_filter:
+    number_of_bins: 100
+    pub_topic: msis/stonefish/data/pointcloud/filtered
+    radial_filter_param: 2
+    range_max: 50
+    std_dev_multiplier: 1
+    sub_topic: msis/stonefish/data/pointcloud
+mvp_acomm.yaml:
+  /alpha_rise/evologics_ros_node:
+    ros__parameters:
+      config:
+        carrier_waveform_id: 1
+        channel_protocol_id: 0
+        cluster_size: 1
+        gain_level: 0
+        highest_address: 6
+        idle_timeout: 1
+        interface:
+          connection_type: tcp
+          tcp_address: 192.168.2.108
+          tcp_port: 9200
+        keep_online_count: 1
+        local_address: 2
+        packet_time: 750
+        remote_address: 1
+        retry_count: 3
+        retry_timeout: 4000
+        sound_speed: 1500
+        source_control: 1
+        source_level: 0
+      transmit_flag: true
+      type: modem
+mvp_c2.yaml:
+  /alpha_rise/commander_c2_serial_comm:
+    ros__parameters:
+      baudrate: 57600
+      port: /dev/ttyUSB0
+  /alpha_rise/mvp_c2_commander:
+    ros__parameters:
+      dccl_tx_interval: 1.0
+      gpio_devices:
+      - payload_24v
+      - regular_payload
+      - backseat
+      helm_state_list:
+      - start
+      - kill
+      - teleop
+      - survey
+      launch_files:
+      - bringup_utilities
+      - bringup_sensors
+      - bringup_localization
+      - bringup_mvp
+      - bringup_thrusters
+      - rosbag_record
+      - bringup_acomm
+      launch_packages:
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+  /alpha_rise/mvp_c2_reporter:
+    ros__parameters:
+      dccl_tx_interval: 1.0
+      gpio_devices:
+      - payload_24v
+      - regular_payload
+      - backseat
+      helm_state_list:
+      - start
+      - kill
+      - teleop
+      - survey
+      launch_files:
+      - bringup_utilities
+      - bringup_sensors
+      - bringup_localization
+      - bringup_mvp
+      - bringup_thrusters
+      - rosbag_record
+      - bringup_acomm
+      launch_packages:
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+      - alpha_rise_bringup
+  /alpha_rise/reporter_c2_serial_comm:
+    ros__parameters:
+      baudrate: 57600
+      port: /dev/ttyAMA0
+mvp_control.yaml:
+  /alpha_rise/mvp_control_ros_node:
+    ros__parameters:
+      child_link_initial: cg_link
+      controller_frequency: 10.0
+      controller_no_setpoint_timeout: 1.0
+      enabled: false
+      generator_type: tf
+      world_link_initial: world_ned
+mvp_gui_params.yaml:
+  flask_node:
+    ros__parameters:
+      db_filename: mvp_gui.db
+      kml_upload_folder: kml_uploads
+      status_thresholds:
+        altimeter:
+          red: 1.0
+          yellow: 3.0
+        cpu_temp:
+          red: 65.0
+          yellow: 50.0
+        cpu_usage:
+          red: 90.0
+          yellow: 70.0
+        current:
+          red: 15.0
+          yellow: 10.0
+        mem_usage:
+          red: 90.0
+          yellow: 70.0
+        pitch:
+          red: 40.0
+          yellow: 20.0
+        roll:
+          red: 40.0
+          yellow: 20.0
+        time_since_update:
+          red: 180.0
+          yellow: 60.0
+        voltage:
+          red: 16.0
+          yellow: 18.0
+      tiles_dir: mvp_gui_offline_map/
+  ros_interface_node:
+    ros__parameters:
+      altimeter_source: altimeter
+      c2_commander_node: /alpha_rise/mvp_c2_commander
+      computer_info_source: computer_info
+      controller_state_get: controller_state
+      controller_state_set: controller/set
+      geo_pose_source: geopose
+      gpio_power_get: gpio_power_state
+      helm_state_get: helm/state
+      helm_state_set: mvp_helm/change_state
+      poses_source: odometry
+      power_info_source: power_info
+      pub_waypoints_service: mvp_helm/set_waypoints
+      roslaunch_state_get: roslaunch_state
+      service_ns: /alpha_rise/remote/id_2/
+      set_power_service: gpio_manager/set_power/
+      survey_geopath_source: survey/geopath
+      topic_ns: /alpha_rise/remote/id_2/
+mvp_mission.yaml:
+  /alpha_rise/mvp_helm:
+    ros__parameters:
+      default_child_link: cg_link
+      default_world_link: world_ned
+      frequency: 10.0
+navsat.yaml:
+  /**/navsat_transform_node:
+    ros__parameters:
+      datum:
+      - 41.0
+      - -71.0
+      - 0.0
+      delay: 1.0
+      frequency: 30.0
+      magnetic_declination_radians: -0.24
+      publish_filtered_gps: true
+      use_odometry_yaw: true
+      wait_for_datum: true
+      yaw_offset: 0.0
+      zero_altitude: false
+nortek_dvl.yaml:
+  /alpha_rise/nucleus_node:
+    ros__parameters:
+      auto_connect: true
+      auto_start: true
+      connection_type: tcp
+      fluid_density: 1023.0
+      frame_id: alpha_rise/dvl
+      sensor_configs:
+      - SETIMU,DS="OFF"
+      - SETAHRS,FREQ=1,MODE=0,DS="OFF"
+      - SETNAV,DS="OFF"
+      - SETBT,MODE="FAST_ACQ",WT="ON",PLMODE="MAX"
+      - SETALTI,PL=0
+      - SETMISSION,RANGE=25,SV=0
+      - SETTRIG,SRC="INTERNAL",FREQ=5,ALTI=5,CP=0
+      serial_port: /dev/ttyUSB1
+      tcp_ip: 192.168.2.103
+      world_frame_id: alpha_rise/world
+path_gen.yaml:
+  /alpha_rise/path_generator:
+    ros__parameters:
+      base_frame: alpha_rise/base_link
+      canny_max_threshold: 255
+      canny_min_threshold: 200
+      costmap_topic: /alpha_rise/costmap
+      debug: false
+      distance_constraint: 15.0
+      enable_search_mode: false
+      max_scan_angle: 90
+      max_yaw_rate: 0.8
+      min_scan_angle: -90
+      msis_vertical_beamwidth: 25
+      odom_frame: alpha_rise/odom
+      path_topic: path
+      points_to_sample_from_curve: 20
+      standoff_distance_meters: 20.0
+      surge_velocity: 0.8
+pi_pico.yaml:
+  PWM_Control:
+    heave_bow:
+      channel: 2
+      mode: thruster
+      topic: control/thruster/heave_bow
+    heave_stern:
+      channel: 3
+      mode: thruster
+      topic: control/thruster/heave_stern
+    surge:
+      channel: 5
+      mode: thruster
+      topic: control/thruster/surge
+    sway_bow:
+      channel: 4
+      mode: thruster
+      topic: control/thruster/sway_bow
+  Serial:
+    baud: 115200
+    databits: 8
+    parity: 0
+    port: /dev/ttyACM0
+    stopbits: 1
+    timeout: 1000
+  System:
+    safety_rate: 1
+    safety_timeout: 3
+power_monitor.yaml:
+  /alpha_rise/power_monitor_node:
+    ros__parameters:
+      current:
+        address: '0x69'
+        bitrate: 18
+        channel: 2
+        gain: 1
+        mode: 1
+      ros:
+        frame_id: alpha
+      system:
+        current_offset: 2.5
+        current_ratio: 0.092147
+        current_scale: 0.066
+        rate: 2
+        voltage_ratio: 0.090082
+        voltage_warn: 15.0
+      voltage:
+        address: '0x69'
+        bitrate: 18
+        channel: 1
+        gain: 1
+        mode: 1
+pwm_driver.yaml:
+  /alpha_rise/pwm_driver_node:
+    ros__parameters:
+      mcu_installed: true
+      no_pwm_timeout: 10.0
+      pwm_frequency: 47.2
+      pwm_ms_bias: 0.1
+      thruster_ch_list:
+      - 0
+      - 1
+      - 2
+      - 4
+      thruster_direction:
+      - 1
+      - 1
+      - 1
+      - 1
+      thruster_init_us:
+      - 1500
+      - 1500
+      - 1500
+      - 1500
+      thruster_max_us:
+      - 1900
+      - 1900
+      - 1900
+      - 1900
+      thruster_min_us:
+      - 1100
+      - 1100
+      - 1100
+      - 1100
+      thruster_topic_list:
+      - control/thruster/sway_bow
+      - control/thruster/heave_bow
+      - control/thruster/heave_stern
+      - control/thruster/surge
+robot_initialization.yaml:
+  /alpha_rise/world_odom_transform_node:
+    ros__parameters:
+      acceptable_var: 10.0
+      datum_latitude: 41.621605
+      datum_longitude: -71.411018
+      datum_manual_start: false
+      m_gps_wait_time: 30.0
+      mag_declination: 0.0
+      mag_declination_auto: false
+      manual_position_covariance: -1.0
+      position_accuracy: 10.0
+robot_initialization_sim.yaml:
+  /alpha_rise/world_odom_transform_node:
+    ros__parameters:
+      acceptable_var: 10.0
+      datum_latitude: 41.0
+      datum_longitude: -71.0
+      datum_manual_start: true
+      m_gps_wait_time: 30.0
+      mag_declination_auto: false
+      manual_position_covariance: -1.0
+      position_accuracy: 10.0
+robot_localization.yaml:
+  /alpha_rise/ekf_filter_node:
+    ros__parameters:
+      base_link_frame: alpha_rise/base_link
+      debug: false
+      debug_out_file: /path/to/debug/file.txt
+      frequency: 20.0
+      imu0: ekf/imu/data
+      imu0_config:
+      - false
+      - false
+      - false
+      - true
+      - true
+      - true
+      - false
+      - false
+      - false
+      - true
+      - true
+      - true
+      - true
+      - true
+      - true
+      imu0_differential: false
+      imu0_queue_size: 10
+      imu0_relative: false
+      imu0_remove_gravitational_acceleration: true
+      map_frame: alpha_rise/map
+      odom0: depth/odometry
+      odom0_config:
+      - false
+      - false
+      - true
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      odom0_differential: false
+      odom0_pose_rejection_threshold: 5.0
+      odom0_pose_use_child_frame: true
+      odom0_queue_size: 2
+      odom0_relative: false
+      odom0_twist_rejection_threshold: 1.0
+      odom1: gps/odometry
+      odom1_config:
+      - true
+      - true
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      odom1_differential: false
+      odom1_pose_rejection_threshold: 10.0
+      odom1_pose_use_child_frame: true
+      odom1_queue_size: 2
+      odom1_relative: false
+      odom1_twist_rejection_threshold: 1.0
+      odom_frame: alpha_rise/odom
+      permit_corrected_publication: false
+      print_diagnostics: true
+      process_noise_covariance:
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.5
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.5
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.5
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.1
+      publish_acceleration: false
+      publish_tf: true
+      sensor_timeout: 0.1
+      transform_time_offset: 0.0
+      transform_timeout: 0.0
+      twist0: nucleus_node/bottom_lock_velocity_common
+      twist0_config:
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - true
+      - true
+      - true
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      twist0_queue_size: 3
+      twist0_rejection_threshold: 2.0
+      two_d_mode: false
+      world_frame: alpha_rise/odom
+robot_localization_sim.yaml:
+  /alpha_rise/ekf_filter_node:
+    ros__parameters:
+      base_link_frame: alpha_rise/base_link
+      debug: false
+      debug_out_file: /path/to/debug/file.txt
+      frequency: 20.0
+      imu0: ekf/imu/data
+      imu0_config:
+      - false
+      - false
+      - false
+      - true
+      - true
+      - true
+      - false
+      - false
+      - false
+      - true
+      - true
+      - true
+      - true
+      - true
+      - true
+      imu0_differential: false
+      imu0_queue_size: 10
+      imu0_relative: false
+      imu0_remove_gravitational_acceleration: true
+      map_frame: alpha_rise/map
+      odom0: depth/odometry
+      odom0_config:
+      - false
+      - false
+      - true
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      odom0_differential: false
+      odom0_pose_rejection_threshold: 5.0
+      odom0_pose_use_child_frame: true
+      odom0_queue_size: 2
+      odom0_relative: false
+      odom0_twist_rejection_threshold: 1.0
+      odom1: gps/odometry
+      odom1_config:
+      - true
+      - true
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      odom1_differential: false
+      odom1_pose_rejection_threshold: 10.0
+      odom1_pose_use_child_frame: true
+      odom1_queue_size: 2
+      odom1_relative: false
+      odom1_twist_rejection_threshold: 1.0
+      odom_frame: alpha_rise/odom
+      permit_corrected_publication: false
+      print_diagnostics: true
+      process_noise_covariance:
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 1e-1
+      publish_acceleration: false
+      publish_tf: true
+      sensor_timeout: 0.1
+      transform_time_offset: 0.0
+      transform_timeout: 0.0
+      twist0: dvl/raw_twist
+      twist0_config:
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      - true
+      - true
+      - true
+      - false
+      - false
+      - false
+      - false
+      - false
+      - false
+      twist0_queue_size: 3
+      twist0_rejection_threshold: 2.0
+      two_d_mode: false
+      world_frame: alpha_rise/odom
+  /alpha_rise/world_odom_transform_node:
+    ros__parameters:
+      acceptable_var: 5.0
+      datum_latitude: 41.0
+      datum_longitude: -71.0
+      m_gps_wait_time: 30.0
+      mag_declination_auto: false
+      position_accuracy: 3.0
+rosbag_record.yaml:
+  bag_output_dir: /home/mvp_admin/ssd/blueiq_11_20/
+  package_names:
+  - alpha_rise_bringup
+  - alpha_rise_config
+  workspace_name: ros2_ws
+sim_params.yaml:
+  /alpha_rise/dvl_driver_node:
+    ros__parameters:
+      dvl_alt_out: /alpha_rise/dvl/altitude
+      dvl_in: /alpha_rise/dvl/stonefish/raw
+      dvl_out: /alpha_rise/dvl/twist
+  /alpha_rise/imu_driver_node:
+    ros__parameters:
+      pitch_offset: 0.0
+      pitch_reverse: -1.0
+      roll_offset: 3.1415926
+      roll_reverse: 1.0
+      yaw_offset: 1.5707
+      yaw_reverse: -1.0
+  /alpha_rise/thruster_driver_node:
+    ros__parameters:
+      thruster_length: 4
+      thruster_pub_topic: /alpha_rise/stonefish/thruster_command
+      thruster_sub_topics:
+      - /alpha_rise/control/thruster/surge
+      - /alpha_rise/control/thruster/sway_bow
+      - /alpha_rise/control/thruster/heave_stern
+      - /alpha_rise/control/thruster/heave_bow
+unicore_rtk.yaml:
+  /alpha_rise/unicore_rtk_driver:
+    ros__parameters:
+      baudrate: 115200
+      debug: false
+      device: /dev/ttyUSB0
+      gps_frame_id: alpha_rise/unicore_gps
+      heading_enu_frame_id: alpha_rise/unicore_gps
+      heading_frame_id: alpha_rise/world_ned
+      use_gnss_time: true
+      use_gpsd_udp: true
+      virtual_port: 5006
+waterlinked_dvl.yaml:
+  /alpha_rise/waterlinked_dvl:
+    ros__parameters:
+      acoustics_enabled: true
+      frame_id: alpha_rise/dvl
+      ip: 192.168.2.102
+      mounting_rotation_offset: 0
+      periodic_cycling_enabled: true
+      port: 16171
+      position_covariance:
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      range_mode: auto
+      speed_of_sound: 1500
+      time_type: 0
+      velocity_covariance:
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+      - 0.0
+waypoints2.yaml:
+  frame_id: world
+  ll_waypoints:
+  - alt: -10
+    lat: 41.0
+    lon: -71.001
+  - alt: -5
+    lat: 41.0001
+    lon: -71.002
+  - alt: -20
+    lat: 41.0002
+    lon: -71.001
+wp_admin.yaml:
+  waypoint_admin:
+    change_state_service: /alpha_rise/helm/change_state
+    check_state_update_rate: 1
+    exit_mode_distance: 30
+    fls_beamwidth: 35
+    follow_mode_timer: 1500
+    get_state_service: /alpha_rise/helm/get_state
+    get_waypoint_service: /alpha_rise/helm/path_3d/get_next_waypoints
+    n_points_param: /alpha_rise/path_generator_node/path_generator/points_to_sample_from_curve
+    odom_topic: /alpha_rise/odometry/filtered/local
+    path_topic: /alpha_rise/path
+    reacquisition_s_param: 0.5
+    search_mode_initial_radius: 10
+    search_mode_timer: 1200
+    stand_off_distance_param: /alpha_rise/path_generator_node/path_generator/standoff_distance_meters
+    update_waypoint_topic: helm/path_3d/update_waypoints
