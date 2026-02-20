@@ -19,7 +19,7 @@ endif()
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/usr/share/cmake/geographiclib/")
 find_package(GeographicLib REQUIRED)
 
-set(library_name mvp_localization)
+set(library_name mvp_localization_backend)
 set(executable_name mvp_localization_node)
 
 
@@ -48,34 +48,29 @@ include_directories(
 link_directories(/usr/local/lib) # GTSAM library path
 
 # Library
-# add_library(${library_name} SHARED
-#   src/mvp_localization/gps_processor.cpp
-#   src/mvp_localization/imu_processor.cpp
-#   src/mvp_localization/mvp_localization.cpp
-# )
+add_library(${library_name} SHARED
+  src/mvp_localization_backend.cpp
+)
 
 
-# ament_target_dependencies(${library_name}
-  # ${dependencies}
-# )
+ament_target_dependencies(${library_name}
+  ${dependencies}
+)
 
-# target_link_libraries( 
-#   ${library_name}
-#   gtsam
-#   gtsam_unstable
-#   ${GeographicLib_LIBRARIES}
-#   # ${GTSAM_LIBRARIES}
-# )
+
+target_link_libraries( 
+  ${library_name}
+  gtsam
+  ${GeographicLib_LIBRARIES}
+)
 
 add_executable(mvp_localization_node
   src/main.cpp
 )
 
 target_link_libraries(${executable_name} 
-  # ${library_name}
+  ${library_name}
   gtsam
-  # gtsam_unstable
-  # PRIVATE
   Eigen3::Eigen
   ${GeographicLib_LIBRARIES}
 )
@@ -90,7 +85,8 @@ ament_target_dependencies(${executable_name}
 
 
 # Install
-install(TARGETS ${executable_name}
+# Install both the library and the executable
+install(TARGETS ${library_name} ${executable_name}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
