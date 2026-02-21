@@ -22,8 +22,8 @@ def generate_launch_description():
         namespace="alpha_rise",
         output='screen',
         prefix=['stdbuf -o L'],
-        remappings=[('imu/data', 'ekf/imu/data'),
-                        ('gps/fix', 'unicore_rtk_driver/fix')],       
+        remappings=[('imu/data', 'ekf/imu/data')]
+                        # ('gps/fix', 'unicore_rtk_driver/fix')],       
     )
 
     foxglove = Node(
@@ -40,5 +40,5 @@ def generate_launch_description():
 
     return LaunchDescription([
         node,
-        # foxglove
+        foxglove
     ])

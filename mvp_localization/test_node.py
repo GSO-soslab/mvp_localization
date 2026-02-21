@@ -15,13 +15,14 @@ from gtsam import (
     NonlinearFactorGraph,
     Values,
     ImuFactor,
+    CombinedImuFactor,
     PriorFactorPose3,
     PriorFactorVector,
     PriorFactorConstantBias,
 )
 
 from gtsam.symbol_shorthand import X, V, B
-
+from gtsam import Rot3, Pose3, noiseModel
 
 def vector3(x, y, z):
     return np.array([x, y, z], dtype=float)
@@ -36,29 +37,31 @@ class ImuISAM2Node(Node):
         # subscriber
         self.sub = self.create_subscription(
             Imu,
-            "/alpha_rise/ekf/imu/data",
+            "imu/data",
             self.imu_callback,
             100)
 
         # publisher for visualization
         self.odom_pub = self.create_publisher(
             Odometry,
-            "/imu/odometry",
+            "imu/odometry",
             10)
 
         # gravity
         self.g = 9.81
 
         # Preintegration parameters
-        self.params = gtsam.PreintegrationParams.MakeSharedU(self.g)
+        self.params = gtsam.PreintegrationCombinedParams.MakeSharedU(self.g)
 
         I = np.eye(3)
         self.params.setAccelerometerCovariance(I * 0.01)
         self.params.setGyroscopeCovariance(I * 0.01)
         self.params.setIntegrationCovariance(I * 0.0001)
+        self.bias = gtsam.imuBias.ConstantBias()
 
-        self.accum = gtsam.PreintegratedImuMeasurements(
-            self.params)
+        # self.accum = gtsam.PreintegratedCombinedMeasurements(
+            # self.params)
+        self.accum = gtsam.PreintegratedCombinedMeasurements(self.params, self.bias)
 
         # ISAM2
         self.isam = ISAM2()
@@ -69,9 +72,7 @@ class ImuISAM2Node(Node):
         # state index
         self.i = 0
 
-        # bias
-        self.bias = gtsam.imuBias.ConstantBias()
-
+        
         # last timestamp
         
         self.last_imu_time = None
@@ -108,6 +109,7 @@ class ImuISAM2Node(Node):
         self.initialEstimate.insert(X(0), pose)
         self.initialEstimate.insert(V(0), vel)
         self.initialEstimate.insert(B(0), self.bias)
+        
 
         self.isam.update(self.graph, self.initialEstimate)
 
@@ -118,17 +120,15 @@ class ImuISAM2Node(Node):
 
         t = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
 
-        # initialize times
         if self.last_imu_time is None:
             self.last_imu_time = t
             self.last_keyframe_time = t
             return
 
-        # IMU integration dt
-        dt_imu = t - self.last_imu_time
+        dt = t - self.last_imu_time
         self.last_imu_time = t
 
-        if dt_imu <= 0:
+        if dt <= 0:
             return
 
         acc = np.array([
@@ -141,31 +141,25 @@ class ImuISAM2Node(Node):
             msg.angular_velocity.y,
             msg.angular_velocity.z])
 
-        # integrate every IMU message
-        self.accum.integrateMeasurement(acc, gyro, dt_imu)
+        self.accum.integrateMeasurement(acc, gyro, dt)
 
-        # check keyframe interval
         dt_keyframe = t - self.last_keyframe_time
 
         if dt_keyframe < self.keyframe_dt:
             return
 
-        # update keyframe time
         self.last_keyframe_time = t
-
         self.i += 1
 
-        print(f"Creating keyframe {self.i}, dt_keyframe={dt_keyframe:.3f}", flush=True)
+        # print(f"Keyframe {self.i}")
 
-        # add factor
-        factor = ImuFactor(
-            X(self.i - 1),
-            V(self.i - 1),
-            X(self.i),
-            V(self.i),
-            B(0),
-            self.accum)
 
+        factor = gtsam.CombinedImuFactor(
+            X(self.i - 1), V(self.i - 1),
+            X(self.i),     V(self.i),
+            B(0),          B(0),
+            self.accum
+        )
         self.graph.add(factor)
 
         result = self.isam.calculateEstimate()
@@ -173,9 +167,36 @@ class ImuISAM2Node(Node):
         prev_pose = result.atPose3(X(self.i - 1))
         prev_vel = result.atVector(V(self.i - 1))
 
-        self.initialEstimate.insert(X(self.i), prev_pose)
-        self.initialEstimate.insert(V(self.i), prev_vel)
-        # self.initialEstimate.insert(B(0), self.bias)
+        prev_state = gtsam.NavState(prev_pose, prev_vel)
+
+        # Predict new state from IMU
+        pred_state = self.accum.predict(prev_state, self.bias)
+        pred_pose  = pred_state.pose()
+        pred_vel   = pred_state.velocity()
+
+        # Insert predicted state
+        self.initialEstimate.insert(X(self.i), pred_pose)
+        self.initialEstimate.insert(V(self.i), pred_vel)
+
+
+         # --- optional: add IMU orientation as prior ---
+        imu_orientation = [
+            msg.orientation.x,
+            msg.orientation.y,
+            msg.orientation.z,
+            msg.orientation.w
+        ]
+        R = gtsam.Rot3.Quaternion(
+            imu_orientation[3],  # w
+            imu_orientation[0],  # x
+            imu_orientation[1],  # y
+            imu_orientation[2]   # z
+        )
+        # pose prior: keep translation, replace rotation
+        pose_prior = gtsam.Pose3(R, pred_pose.translation())
+        orient_noise = gtsam.noiseModel.Diagonal.Sigmas(np.array([0.01, 0.01, 0.01, 0, 0, 0]))
+        self.graph.add(gtsam.PriorFactorPose3(X(self.i), pose_prior, orient_noise))
+
 
         self.isam.update(self.graph, self.initialEstimate)
 
@@ -183,15 +204,13 @@ class ImuISAM2Node(Node):
 
         pose = result.atPose3(X(self.i))
         velocity = result.atVector(V(self.i))
+        self.bias = result.atConstantBias(B(0))
 
         self.publish_odometry(pose, velocity, msg.header.stamp)
 
-        # reset
+        self.accum.resetIntegrationAndSetBias(self.bias)
         self.graph.resize(0)
         self.initialEstimate.clear()
-        self.accum.resetIntegration()
-
-        
 
     def publish_odometry(self, pose, velocity, stamp):
 
